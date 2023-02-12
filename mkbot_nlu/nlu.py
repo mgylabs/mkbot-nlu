@@ -3,19 +3,22 @@ import os
 import tarfile
 
 import requests
-from rasa.core.agent import Agent
 
 from mkbot_nlu.utils import CommandConnector, Intent
 
 
 class MKBotNLU:
-    def __init__(self, model_path: str) -> None:
-        self.agent = Agent.load(model_path)
-        download_dir_name = "mkbot-nlu"
-        self.download_dir_path = os.getenv("TEMP") + f"\\{download_dir_name}"
+    def __init__(self, model_path: str = "model/nlu-20230210-225717.tar.gz") -> None:
+        from rasa.core.agent import Agent
 
-    def download_ko_wiki_model(self):
-        download_file_name = f"{self.download_dir_path}\\ko_wiki_model-0.0.0.tar.gz"
+        self.agent = Agent.load(model_path)
+
+    @classmethod
+    def download_ko_wiki_model(cls):
+        download_dir_name = "mkbot-nlu"
+        download_dir_path = os.getenv("TEMP") + f"\\{download_dir_name}"
+
+        download_file_name = f"{download_dir_path}\\ko_wiki_model-0.0.0.tar.gz"
 
         os.makedirs(os.path.dirname(download_file_name), exist_ok=True)
 
