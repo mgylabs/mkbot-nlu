@@ -1,5 +1,6 @@
 import asyncio
 import os
+import shutil
 import tarfile
 
 import aiohttp
@@ -21,11 +22,13 @@ class MKBotNLU:
     @classmethod
     async def download_ko_wiki_model(cls):
         download_dir_name = "mkbot-nlu"
-        download_dir_path = os.getenv("TEMP") + f"\\{download_dir_name}"
+        download_dir_path = os.getenv("TEMP") + f"/{download_dir_name}"
+        tar_dir_name = "ko_wiki_model-0.0.0"
+        package_name = "ko_wiki_model"
 
-        download_file_name = f"{download_dir_path}\\ko_wiki_model-0.0.0.tar.gz"
+        download_file_name = f"{download_dir_path}/{tar_dir_name}.tar.gz"
 
-        os.makedirs(os.path.dirname(download_file_name), exist_ok=True)
+        os.makedirs(download_dir_path, exist_ok=True)
 
         async with aiohttp.ClientSession(raise_for_status=True) as session:
             async with session.get(
@@ -36,8 +39,16 @@ class MKBotNLU:
                         f.write(chunk)
 
         tar = tarfile.open(download_file_name)
-        tar.extractall()
+        tar.extractall(download_dir_path)
         tar.close()
+
+        shutil.move(
+            f"{download_dir_path}/{tar_dir_name}/{package_name}", f"./{package_name}"
+        )
+        shutil.move(
+            f"{download_dir_path}/{tar_dir_name}/{package_name}.egg-info",
+            f"./{package_name}.egg-info",
+        )
 
     def sync_parse(self, message: str) -> str:
         message = message.strip()

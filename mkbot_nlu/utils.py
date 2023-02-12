@@ -13,7 +13,7 @@ class Intent:
 
     @property
     def description(self):
-        return CommandConnector.intent2desc[self.name]
+        return CommandConnector.intent2desc.get(self.name, "-")
 
     def get_an_entity(self, name):
         if name in self.entities:
@@ -29,7 +29,7 @@ class Intent:
 def register_intent(name: str, desc: str):
     def deco(func):
         CommandConnector.intent2method[name] = func
-        CommandConnector.intent2method[name] = desc
+        CommandConnector.intent2desc[name] = desc
 
         @wraps(func)
         def wrapper(*args, **kwargs):
@@ -47,6 +47,6 @@ class CommandConnector:
     @classmethod
     def Run(cls, intent: Intent) -> Union[str, None]:
         if intent.name in cls.intent2method:
-            return cls.intent2method[intent.name]()
+            return cls.intent2method[intent.name](intent)
         else:
             return None
