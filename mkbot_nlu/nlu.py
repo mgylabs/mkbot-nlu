@@ -2,19 +2,24 @@ import asyncio
 import os
 import tarfile
 
-import requests
+import aiohttp
 
+from mkbot_nlu.paths import MODULE_ROOT_PATH
 from mkbot_nlu.utils import CommandConnector, Intent
+
+DEFAULT_MODEL_DIR = os.path.join(MODULE_ROOT_PATH, "models")
 
 
 class MKBotNLU:
-    def __init__(self, model_path: str = "model/nlu-20230210-225717.tar.gz") -> None:
+    def __init__(
+        self, model_path: str = f"{DEFAULT_MODEL_DIR}/nlu-20230210-225717.tar.gz"
+    ) -> None:
         from rasa.core.agent import Agent
 
         self.agent = Agent.load(model_path)
 
     @classmethod
-    def download_ko_wiki_model(cls):
+    async def download_ko_wiki_model(cls):
         download_dir_name = "mkbot-nlu"
         download_dir_path = os.getenv("TEMP") + f"\\{download_dir_name}"
 
@@ -22,15 +27,13 @@ class MKBotNLU:
 
         os.makedirs(os.path.dirname(download_file_name), exist_ok=True)
 
-        r = requests.get(
-            "https://github.com/mgylabs/spacy_ko_wiki_model/releases/download/v0.0.0/ko_wiki_model-0.0.0.tar.gz",
-            stream=True,
-        )
-        r.raise_for_status()
-
-        with open(download_file_name, "wb") as f:
-            for chunk in r.iter_content(chunk_size=1024 * 1024):
-                f.write(chunk)
+        async with aiohttp.ClientSession(raise_for_status=True) as session:
+            async with session.get(
+                "https://github.com/mgylabs/spacy_ko_wiki_model/releases/download/v0.0.0/ko_wiki_model-0.0.0.tar.gz",
+            ) as r:
+                with open(download_file_name, "wb") as f:
+                    async for chunk in r.content.iter_chunked(1024 * 1024):
+                        f.write(chunk)
 
         tar = tarfile.open(download_file_name)
         tar.extractall()
