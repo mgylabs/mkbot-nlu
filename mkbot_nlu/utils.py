@@ -6,6 +6,7 @@ class Intent:
     def __init__(self, parse_result: dict) -> None:
         self.name = parse_result["intent"]["name"]
         self.text = parse_result["text"]
+        self.cmd: str = None
         self.entities = {}
 
         self.parse_entities(parse_result["entities"])

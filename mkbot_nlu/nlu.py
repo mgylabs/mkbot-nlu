@@ -39,9 +39,13 @@ class MKBotNLU:
     def sync_parse(self, message: str) -> str:
         message = message.strip()
         result = asyncio.run(self.agent.parse_message(message))
-        return CommandConnector.Run(Intent(result))
+        intent = Intent(result)
+        intent.cmd = CommandConnector.Run(intent)
+        return intent
 
     async def parse(self, message: str):
         message = message.strip()
         result = await self.agent.parse_message(message)
-        return CommandConnector.Run(Intent(result))
+        intent = Intent(result)
+        intent.cmd = CommandConnector.Run(intent)
+        return intent
