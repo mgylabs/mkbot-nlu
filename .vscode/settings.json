@@ -1,0 +1,40 @@
+{
+    "python.terminal.executeInFileDir": false,
+    "python.terminal.activateEnvironment": true,
+    "python.terminal.launchArgs": [],
+    "python.autoComplete.extraPaths": [
+        "mkbot_nlu"
+    ],
+    "python.formatting.autopep8Args": [
+        "--ignore",
+        "E402"
+    ],
+    "python.formatting.provider": "black",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": true,
+        "source.fixAll": true
+    },
+    "python.analysis.extraPaths": [
+        "mkbot_nlu"
+    ],
+    "python.testing.unittestEnabled": false,
+    // "terminal.integrated.env.windows": {
+    //   "PATH": "${env:PATH};${workspaceFolder}\\scripts",
+    // },
+    "python.testing.unittestArgs": [
+        "-v",
+        "-s",
+        "tests",
+        "-p",
+        "test*.py"
+    ],
+    "python.testing.pytestEnabled": false,
+    "python.testing.autoTestDiscoverOnSaveEnabled": false,
+    "files.insertFinalNewline": true,
+    "editor.formatOnType": true,
+    "editor.formatOnPaste": false,
+    "editor.formatOnSaveMode": "file",
+    "prettier.tabWidth": 2,
+    "omnisharp.useModernNet": false,
+}
