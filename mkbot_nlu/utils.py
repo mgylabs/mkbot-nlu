@@ -10,6 +10,10 @@ class Intent:
 
         self.parse_entities(parse_result["entities"])
 
+    @property
+    def description(self):
+        return CommandConnector.intent2desc[self.name]
+
     def get_an_entity(self, name):
         if name in self.entities:
             return self.entities[name][0]
@@ -21,9 +25,10 @@ class Intent:
             self.entities.setdefault(entity["entity"], []).append(entity["value"])
 
 
-def register_intent(name: str):
+def register_intent(name: str, desc: str):
     def deco(func):
         CommandConnector.intent2method[name] = func
+        CommandConnector.intent2method[name] = desc
 
         @wraps(func)
         def wrapper(*args, **kwargs):
@@ -36,6 +41,7 @@ def register_intent(name: str):
 
 class CommandConnector:
     intent2method = {}
+    intent2desc = {}
 
     @classmethod
     def Run(cls, intent: Intent) -> Union[str, None]:
