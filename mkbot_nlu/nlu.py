@@ -13,7 +13,7 @@ DEFAULT_MODEL_DIR = os.path.join(MODULE_ROOT_PATH, "models")
 
 class MKBotNLU:
     def __init__(
-        self, model_path: str = f"{DEFAULT_MODEL_DIR}/nlu-20230210-225717.tar.gz"
+        self, model_path: str = f"{DEFAULT_MODEL_DIR}/nlu-20230213-231000.tar.gz"
     ) -> None:
         from rasa.core.agent import Agent
 
