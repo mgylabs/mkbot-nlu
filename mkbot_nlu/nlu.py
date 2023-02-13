@@ -23,8 +23,8 @@ class MKBotNLU:
     async def download_ko_wiki_model(cls):
         download_dir_name = "mkbot-nlu"
         download_dir_path = os.getenv("TEMP") + f"/{download_dir_name}"
-        tar_dir_name = "ko_wiki_model-0.0.0"
-        package_name = "ko_wiki_model"
+        tar_dir_name = "ko_news_md-0.1.0"
+        package_name = "ko_news_md"
 
         download_file_name = f"{download_dir_path}/{tar_dir_name}.tar.gz"
 
@@ -32,7 +32,7 @@ class MKBotNLU:
 
         async with aiohttp.ClientSession(raise_for_status=True) as session:
             async with session.get(
-                "https://github.com/mgylabs/spacy_ko_wiki_model/releases/download/v0.0.0/ko_wiki_model-0.0.0.tar.gz",
+                "https://github.com/mgylabs/spacy_ko_model/releases/download/ko_news_md-0.1.0/ko_news_md-0.1.0.tar.gz",
             ) as r:
                 with open(download_file_name, "wb") as f:
                     async for chunk in r.content.iter_chunked(1024 * 1024):
@@ -50,16 +50,16 @@ class MKBotNLU:
             f"./{package_name}.egg-info",
         )
 
-    def sync_parse(self, message: str) -> str:
+    def sync_parse(self, message: str) -> Intent:
         message = message.strip()
         result = asyncio.run(self.agent.parse_message(message))
         intent = Intent(result)
-        intent.cmd = CommandConnector.Run(intent)
+        intent.response = CommandConnector.Run(intent)
         return intent
 
-    async def parse(self, message: str):
+    async def parse(self, message: str) -> Intent:
         message = message.strip()
         result = await self.agent.parse_message(message)
         intent = Intent(result)
-        intent.cmd = CommandConnector.Run(intent)
+        intent.response = CommandConnector.Run(intent)
         return intent
