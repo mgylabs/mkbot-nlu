@@ -10,7 +10,7 @@ packages = [{include = "mkbot_nlu"}]
 python = "3.10.*"
 aiohttp = ">=3.8.3"
 python-mecab-ko = { version = "1.3.3", optional = true }
-rasa = {git = "https://github.com/RasaHQ/rasa.git", rev = "3.4.2", optional = true}
+rasa = {git = "https://github.com/MycroftKang/rasa-cpu.git", rev = "1acfa9e8ff1712a63907d3cc0e26371e4d67b055", optional = true}
 spacy = { version = "3.4.4", optional = true }
 
 [tool.poetry.group.dev.dependencies]
