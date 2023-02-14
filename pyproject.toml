@@ -8,16 +8,19 @@ packages = [{include = "mkbot_nlu"}]
 
 [tool.poetry.dependencies]
 python = "3.10.*"
-python-mecab-ko = "1.3.3"
-rasa = {git = "https://github.com/RasaHQ/rasa.git", rev = "3.4.2"}
-spacy = "3.4.4"
 aiohttp = ">=3.8.3"
+python-mecab-ko = { version = "1.3.3", optional = true }
+rasa = {git = "https://github.com/RasaHQ/rasa.git", rev = "3.4.2", optional = true}
+spacy = { version = "3.4.4", optional = true }
 
 [tool.poetry.group.dev.dependencies]
 ipykernel = "6.20.2"
 pylint = "2.16.1"
 black = "22.10"
-ko-wiki-model = {url = "https://github.com/mgylabs/spacy_ko_wiki_model/releases/download/v0.0.0/ko_wiki_model-0.0.0.tar.gz"}
+ko-news-md = {url = "https://github.com/mgylabs/spacy_ko_model/releases/download/ko_news_md-0.1.0/ko_news_md-0.1.0.tar.gz"}
+
+[tool.poetry.extras]
+full = ["python-mecab-ko", "rasa", "spacy"]
 
 [build-system]
 requires = ["poetry-core"]
