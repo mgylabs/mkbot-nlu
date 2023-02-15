@@ -20,7 +20,7 @@ class MKBotNLU:
         self.agent = Agent.load(model_path)
 
     @classmethod
-    async def download_ko_wiki_model(cls):
+    async def download_ko_model(cls, target_dir_path: str):
         download_dir_name = "mkbot-nlu"
         download_dir_path = os.getenv("TEMP") + f"/{download_dir_name}"
         tar_dir_name = "ko_news_md-0.1.0"
@@ -42,12 +42,14 @@ class MKBotNLU:
         tar.extractall(download_dir_path)
         tar.close()
 
+        os.makedirs(target_dir_path, exist_ok=True)
+
         shutil.move(
-            f"{download_dir_path}/{tar_dir_name}/{package_name}", f"./{package_name}"
+            f"{download_dir_path}/{tar_dir_name}/{package_name}", f"{target_dir_path}/{package_name}"
         )
         shutil.move(
             f"{download_dir_path}/{tar_dir_name}/{package_name}.egg-info",
-            f"./{package_name}.egg-info",
+            f"{target_dir_path}/{package_name}.egg-info",
         )
 
     def sync_parse(self, message: str) -> Intent:
