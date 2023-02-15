@@ -2942,7 +2942,6 @@ scipy = {version = ">=1.4.1,<1.9.0", markers = "python_version >= \"3.8\" and py
 setuptools = ">=41.0.0"
 sklearn-crfsuite = "~0.3"
 SQLAlchemy = ">=1.4.0,<1.5.0"
-tarsafe = "^0.0.3"
 tensorflow-addons = "~0.17.0"
 tensorflow-cpu = {version = "~2.8.4", markers = "sys_platform != \"darwin\" or platform_machine != \"arm64\""}
 tensorflow_hub = "~0.12.0"
@@ -2964,8 +2963,8 @@ transformers = ["sentencepiece[sentencepiece] (>=0.1.96,<0.2.0)", "transformers 
 [package.source]
 type = "git"
 url = "https://github.com/MycroftKang/rasa-cpu.git"
-reference = "da22aac86d6772d7fd451e119a1c7a716a006f10"
-resolved_reference = "da22aac86d6772d7fd451e119a1c7a716a006f10"
+reference = "dc276bb975d205daa389551727240437c5131297"
+resolved_reference = "dc276bb975d205daa389551727240437c5131297"
 
 [[package]]
 name = "regex"
@@ -3593,18 +3592,6 @@ files = [
 
 [package.extras]
 widechars = ["wcwidth"]
-
-[[package]]
-name = "tarsafe"
-version = "0.0.3"
-description = "A safe subclass of the TarFile class for interacting with tar files. Can be used as a direct drop-in replacement for safe usage of extractall()"
-category = "main"
-optional = true
-python-versions = ">=3.6"
-files = [
-    {file = "tarsafe-0.0.3-py3-none-any.whl", hash = "sha256:f8181c5559aea70af2579a0dc0811d2e9e3eabd706dd594555b4dfa52c0be51a"},
-    {file = "tarsafe-0.0.3.tar.gz", hash = "sha256:7acf73a11b576fcbb003b52adecf4706d6c3009c6af28a01fd21949235ffd806"},
-]
 
 [[package]]
 name = "tensorboard"
@@ -4469,4 +4456,4 @@ full = ["python-mecab-ko", "rasa", "spacy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "3.10.*"
-content-hash = "4ceb24a2f90bf822b994bfaebee8c28856fbe80c4442916c20646b82ff34f44d"
+content-hash = "74de2349bef779346e008d5d834c09be48f49dfa5d21cf789a20c7c6cdc36a82"
