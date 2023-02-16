@@ -5,6 +5,7 @@ import os
 import shutil
 import tarfile
 from multiprocessing.managers import SyncManager
+from threading import Event
 
 import aiohttp
 
@@ -48,11 +49,13 @@ class Loader(multiprocessing.Process):
         self,
         model_path: str,
         task_queue: multiprocessing.Queue,
+        ready_event: Event,
     ) -> None:
         super().__init__(daemon=True)
 
         self.model_path = model_path
         self.task_queue = task_queue
+        self.ready_event = ready_event
 
     async def _nlu_parse(self, agent, message: str):
         message = message.strip()
@@ -69,6 +72,8 @@ class Loader(multiprocessing.Process):
         agent = Agent.load(self.model_path)
 
         log.info("NLU Model Loaded")
+
+        self.ready_event.set()
 
         while True:
             task: NluTask = self.task_queue.get()
@@ -92,19 +97,29 @@ class MKBotNLU:
         self, model_path: str = f"{DEFAULT_MODEL_DIR}/nlu-20230213-231000.tar.gz"
     ) -> None:
         self.model_path = model_path
+
         self.manager = multiprocessing.Manager()
+        self.ready_event = self.manager.Event()
+        self.tasks = None
+        self.loader = None
+
         NluTask.manager = self.manager
 
     def start(self):
+        self.ready_event.clear()
         self.tasks = self.manager.Queue()
-        self.loader = Loader(self.model_path, self.tasks)
+        self.loader = Loader(self.model_path, self.tasks, self.ready_event)
         self.loader.start()
 
     def join(self):
         self.loader.join()
 
     def terminate(self):
+        self.ready_event.clear()
         self.loader.terminate()
+
+    def is_ready(self):
+        return self.ready_event.is_set()
 
     @classmethod
     async def download_ko_model(cls, target_dir_path: str):
